@@ -52,23 +52,47 @@ const valg = {
         "Hop skole",
         "Ask barnehage"
     ]
-}
+};
 
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
+    const resultsDiv = document.getElementById('results');
 
-    if (searchInput) {
-        searchInput.addEventListener('input', function () {
-            const inputValue = searchInput.value.toLowerCase();
-            for (const [key, locations] of Object.entries(valg)) {
-                for (const location of locations) {
-                    if (location.toLowerCase().includes(inputValue)) {
-                        console.log(`Can exist in ${location}, which is in ${key}`);
-                    }
-                }
+    searchInput.addEventListener('input', function () {
+        const inputValue = searchInput.value.toLowerCase();
+        resultsDiv.innerHTML = ""; // clear old results
+
+        if (inputValue.trim() === "") return;
+
+        let found = false;
+
+        for (const [region, locations] of Object.entries(valg)) {
+            const matches = locations.filter(loc => loc.toLowerCase().includes(inputValue));
+
+            if (matches.length > 0) {
+                found = true;
+                const regionDiv = document.createElement('div');
+                regionDiv.classList.add('region-block');
+
+                const regionTitle = document.createElement('h2');
+                regionTitle.textContent = region;
+                regionDiv.appendChild(regionTitle);
+
+                const ul = document.createElement('ul');
+                matches.forEach(loc => {
+                    const li = document.createElement('li');
+                    const regex = new RegExp(`(${inputValue})`, 'gi');
+                    li.innerHTML = loc.replace(regex, `<mark>$1</mark>`);
+                    ul.appendChild(li);
+                });
+
+                regionDiv.appendChild(ul);
+                resultsDiv.appendChild(regionDiv);
             }
-        });
-    } else {
-        console.warn('No input with ID "searchInput" found.');
-    }
+        }
+
+        if (!found) {
+            resultsDiv.innerHTML = `<p class="no-results">No matches found.</p>`;
+        }
+    });
 });
