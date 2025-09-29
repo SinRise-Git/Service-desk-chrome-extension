@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Service Desk Helper",
+  "version": "1.0",
+  "description": "A Chrome extension to help with service desk tasks.",
+  "permissions": [
+    "clipboardRead",
+    "clipboardWrite",
+    "activeTab",
+    "tabs",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://servicedesk.askoy.kommune.no/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "public/index.html",
+    "default_title": "Settings"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://servicedesk.askoy.kommune.no/WorkOrder.do"
+      ],
+      "js": ["content.js"]
+    }
+  ],
+  "author": "Sinrise"
+}
