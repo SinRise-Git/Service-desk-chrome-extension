@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Service Desk Helper</title>
-    <script src="script.js" defer></script>
+    <script src="./script/search-script.js" defer></script>
+    <script src="./script/button-script.js" defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <h1>Service Desk Helper</h1>
-    <div class="search-container"> 
-        <input type="search" id="searchInput" placeholder="Search...">
-    </div>
+    <div class="main">
+        <div class="button-container">
+            <label for="toggleSwitch">Hylle visnign:</label>
+            <input type="checkbox" id="toggleSwitch">
+        </div>
+        <div class="search-container">
+            <input type="search" id="searchInput" placeholder="Søk etter lokasjon...">
+        </div>
 
-    <!-- Results will appear here -->
-    <div id="results"></div>
+        <div id="results"></div>
+    </div>
 </body>
 </html>

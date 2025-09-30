@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     searchInput.addEventListener('input', function () {
         const inputValue = searchInput.value.toLowerCase();
-        resultsDiv.innerHTML = ""; // clear old results
+        resultsDiv.innerHTML = "";
 
         if (inputValue.trim() === "") return;
 
@@ -81,8 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const ul = document.createElement('ul');
                 matches.forEach(loc => {
                     const li = document.createElement('li');
-                    const regex = new RegExp(`(${inputValue})`, 'gi');
-                    li.innerHTML = loc.replace(regex, `<mark>$1</mark>`);
+                    li.innerHTML =  loc
                     ul.appendChild(li);
                 });
 
@@ -92,7 +91,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (!found) {
-            resultsDiv.innerHTML = `<p class="no-results">No matches found.</p>`;
+            resultsDiv.innerHTML = `<p class="no-results">Finner ingen ting for denne lokasjonene</p>`;
         }
     });
 });
+

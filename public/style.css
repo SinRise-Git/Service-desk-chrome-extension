@@ -9,24 +9,51 @@ body {
 
 h1 {
     text-align: center;
-    margin-bottom: 20px;
+    padding: 0px;
+    margin: 10px 0px 10px 0;
+
 }
 
-.search-container {
+.button-container {
+    margin: 10px;
+    padding: 10px;
+}
+
+.search-container, .button-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.button-container label {
+    font-size: 14px;
+    font-weight: bolder;
+}
+
+#toggleSwitch {
+    cursor: pointer;
+    text-align: center;
 }
 
 #searchInput {
     width: 80%;
     padding: 10px;
     border-radius: 8px;
-    background-color: transparent;
-    border: 1px solid #1d293d;
+    background-color: #292929;
     font-size: 12px;
     color: white;
+    border: none;
 }
+#searchInput::placeholder {
+    color: lightgrey;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
 
 #results {
     max-width: 80%;
@@ -34,9 +61,8 @@ h1 {
 }
 
 .region-block {
-    background: transparent;
+    background: #2a2b2e;
     border-radius: 10px;
-    border: 1px solid #1d293d;
     padding: 15px;
     margin-bottom: 15px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -56,8 +82,7 @@ h1 {
 
 .region-block li {
     padding: 5px 0;
-    color: gray;
-    border-bottom: 1px solid #1d293d;
+    color: lightgray;
 }
 
 .region-block li:last-child {
