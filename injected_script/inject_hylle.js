@@ -35,6 +35,7 @@
             "Kleppegrennd",
             "Juvik boliger",
             "IT-avdelingen",
+            "Fagopplæring i Askøy kommune",
         ],
         "Vest": [
             "Strusshamn skole",
@@ -59,6 +60,7 @@
             "Ask barnehage"
         ]
     }
+;
 
     if (exist) return;
 

@@ -1,16 +1,20 @@
-let show_hylle = true;
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status !== 'complete') return;
+  if (!tab.url) return;
+
   chrome.storage.local.get(['show_hylle'], function(result) {
-    console.log("Initial load from storage:", result.show_hylle);
-    show_hylle = result.show_hylle;
-  });
-  if (changeInfo.status === 'complete' && tab.url && show_hylle) {
+    const show_hylle = (typeof result.show_hylle === 'boolean') ? result.show_hylle : true; 
+    if (!show_hylle) return;
+
     chrome.scripting.executeScript({
       target: { tabId: tabId },
-      files: ['content.js']
+      files: [
+        'injected_script/inject_hylle.js',
+        'injected_script/time_counter.js'
+      ]
     }).catch(err => {
-      console.log('Script injection failed:', err);
+      console.error('Script injection failed:', err);
     });
-  }
+  });
 });

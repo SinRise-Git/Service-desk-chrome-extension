@@ -4,6 +4,7 @@
   "version": "1.0",
   "description": "A Chrome extension to help with service desk tasks.",
   "permissions": [
+    "debugger",
     "clipboardRead",
     "clipboardWrite",
     "activeTab",
@@ -23,10 +24,11 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://servicedesk.askoy.kommune.no/WorkOrder.do"
-      ],
-      "js": ["content.js"]
+      "matches": ["https://servicedesk.askoy.kommune.no/WorkOrder.do"],
+      "js": [
+        "injected_script/inject_hylle.js",
+        "injected_script/time_counter.js"
+      ]
     }
   ],
   "author": "Sinrise"
