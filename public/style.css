@@ -14,26 +14,40 @@ h1 {
 
 }
 
-.button-container {
-    margin: 10px;
-    padding: 10px;
+.option-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.search-container, .button-container {
+.name-container, .button-container {
+    text-align: center;
+    margin: 10px 10px 10px 10px !important;
+}
+
+.search-container, .button-container, .name-container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 15px;
 }
 
-.button-container label {
+.button-container label, .name-container label {
     font-size: 14px;
     font-weight: bolder;
 }
 
+#nameSelect {
+    margin: 3px;
+    padding: 2px;
+    border-radius: 5px;
+    background-color: #292929;
+    color: white;
+    border: none;
+}
+
 #toggleSwitch {
-    cursor: pointer;
-    text-align: center;
+    margin: 3px;
 }
 
 #searchInput {

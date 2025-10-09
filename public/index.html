@@ -7,15 +7,26 @@
     <title>Service Desk Helper</title>
     <script src="./script/search-script.js" defer></script>
     <script src="./script/button-script.js" defer></script>
+     <script src="./script/name-script.js" defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <h1>Service Desk Helper</h1>
     <div class="main">
-        <div class="button-container">
-            <label for="toggleSwitch">Hylle visning:</label>
-            <input type="checkbox" id="toggleSwitch">
+        <div class="option-container">
+            <div class="button-container">
+                <label for="toggleSwitch">Hylle visning:</label>
+                <input type="checkbox" id="toggleSwitch">
+            </div>
+            <div class="name-container">
+                <label for="nameSelect">Navn:</label>
+                <select id="nameSelect">
+                    <option value="Temp1">Temp1</option>
+                    <option value="Temp2">Temp2</option>
+                    <option value="Temp3">Temp3</option>
+                </select>
+            </div>
         </div>
         <div class="search-container">
             <input type="search" id="searchInput" placeholder="Søk etter lokasjon...">
