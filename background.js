@@ -11,7 +11,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       target: { tabId: tabId },
       files: [
         'injected_script/inject_hylle.js',
-        'injected_script/time_counter.js'
+        'injected_script/time_counter.js',
+        'injected_script/delete_time.js'
       ]
     }).catch(err => {
       console.error('Script injection failed:', err);

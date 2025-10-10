@@ -53,12 +53,11 @@
                         minutes: dataMin + (dataHour * 60),
                         user: stored_name
                     };
+                    console.log('Storing time entry:', data);
                     chrome.storage.local.get(['time_entries'], function (result) {
                         let existing_time_entries = result.time_entries || [];
                         existing_time_entries.push(data);
-                        chrome.storage.local.set({ time_entries: existing_time_entries }, function () {
-                            console.log('Time entry saved:', data);
-                        });
+                        chrome.storage.local.set({ time_entries: existing_time_entries });
                     });
                 }
            });
