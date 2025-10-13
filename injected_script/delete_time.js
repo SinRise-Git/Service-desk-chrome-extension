@@ -1,9 +1,8 @@
 (() => {
-    function attachListener(worklogContainer, deleteButton) {
-        console.log('Attaching listener to worklog container.');
+    function attachListener(deleteButton, deleteButton) {
         let selectedEntries = [];
-        if (worklogContainer) {
-            console.log('Attaching listener to worklog container.');
+        console.log('FOUND:', worklogLoaded);
+        if (worklogLoaded.length > 0) {
             const worklogTbody = document.getElementById('worklog_body');
             const tbodyRows = worklogTbody.querySelectorAll(':scope > tr');
             tbodyRows.forEach(row => {
@@ -27,7 +26,6 @@
                         }
                         console.log('Current selectedEntries:', selectedEntries);
                     });
-                    console.log('Checkbox element:', worklogCheck);
                 }
             });
         }
@@ -50,31 +48,31 @@
                             console.log('Updated time_entries after deletion:', existing_entries);
                         });
                     });
+                    startObserving(); 
                 });
             });
         }
 
     }
     function startObserving() {
-        const observer = new MutationObserver((mutations, obs) => {
-            const deleteButton = document.getElementById('worklog_btn_delete');
-            const worklogContainer = document.getElementById('worklog');
-            if (deleteButton && worklogContainer) {
-                console.log('Worklog and delete button found, attaching listener.');
-                attachListener(worklogContainer, deleteButton);
-                obs.disconnect();
-            }
-        });
+        if (window.location.hash == '#worklogs') {
+            const observer = new MutationObserver((mutations, obs) => {
+                const worklogLoaded = document.querySelectorAll('.tc-row.visi-parent');
+                    const deleteButton = document.getElementById('worklog_btn_delete');
+                if (worklogLoaded.length > 0) {
+                    console.log('STARTOBSERVING:Worklog and delete button found, attaching listener.');
+                    attachListener(worklogLoaded, deleteButton);
+                    console.log('Observer disconnected after attaching listener.');
+                    obs.disconnect();
+                }
+            });
 
-        observer.observe(document.documentElement || document, {
-            childList: true,
-            subtree: true,
-            once: true
-        });
+            observer.observe(document.documentElement || document, {
+                childList: true,
+                subtree: true,
+            });
+        }
     }
-    document.getElementById('worklogs-tab').addEventListener('click', function () {
-        startObserving();
-    });
+
     startObserving();
 })();
-
