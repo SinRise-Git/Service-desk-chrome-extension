@@ -8,7 +8,6 @@
             tbodyRows.forEach(row => {
                 console.log('Processing row:', row);
                 const worklogCheck = row.querySelector('.tc-row.visi-parent .headercheckbox.tbl-bg-mode input');
-                console.log('Checkbox in row:', worklogCheck);
                 if (worklogCheck) {
                     console.log('Found checkbox in row:', worklogCheck);
                     worklogCheck.addEventListener('change', function () {
