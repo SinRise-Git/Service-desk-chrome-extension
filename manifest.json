@@ -28,7 +28,8 @@
       "js": [
         "injected_script/inject_hylle.js",
         "injected_script/time_counter.js",
-        "injected_script/delete_time.js"
+        "injected_script/delete_time.js",
+        "injected_script/add_hylle.js"
       ]
     }
   ],

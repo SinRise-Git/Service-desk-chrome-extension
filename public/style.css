@@ -25,7 +25,7 @@ h1 {
     margin: 10px 10px 10px 10px !important;
 }
 
-.search-container, .button-container, .name-container, .work-container {
+.search-container, .button-container, .name-container, .work-container, .textAdd-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,7 +38,7 @@ h1 {
 
 .work-container {
     gap: 5px;
-    margin: 5px 10px 20px 10px ;
+    margin: 5px 10px 10px 10px ;
 }
 
 .work-container p {
@@ -51,19 +51,35 @@ h1 {
     font-size: 14px;
 }
 
+.name-container span {
+    font-size: 14px;
+    margin-left: 2.5px;
+}
 
-#nameSelect {
-    margin: 3px;
-    padding: 2px;
-    border-radius: 5px;
+.textAdd-container {
+    margin-bottom: 10px;
+}
+
+.textAdd-container label {
+    font-size: 14px;
+    font-weight: bolder;
+    margin-right: 5px;
+}
+
+.textAdd-container input {
+    padding: 10px;
+    border-radius: 8px;
     background-color: #292929;
+    font-size: 12px;
     color: white;
     border: none;
+
 }
 
 #toggleSwitch {
     margin: 3px;
 }
+
 
 #searchInput {
     width: 80%;

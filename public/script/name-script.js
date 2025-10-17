@@ -1,23 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let currentName = 'name not set';
-    const nameSelect = document.getElementById("nameSelect");
-    if (nameSelect) {
-        chrome.storage.local.get(['user_name'], function (result) {
-            if (result.user_name) {
-                nameSelect.value = result.user_name;
-                currentName = result.user_name;
-            } else {
-                chrome.storage.local.set({ user_name: nameSelect.value });
-                currentName = nameSelect.value;
-            }
-        });
-        nameSelect.addEventListener("change", function () {
-            let selectedName = this.value;
-            currentName = selectedName;
-            chrome.storage.local.set({ user_name: selectedName });
-            getWorkMinutes()
-        });
-    }
+    let currentName = "";
+    chrome.storage.local.get(['user_name'], function (result) {
+        if (result.user_name) {
+            currentName = result.user_name;
+            document.getElementById("nameDisplay").innerText = currentName;
+        }
+    });
+
     function getWorkMinutes() {
         let totalMinutes = 0;
         chrome.storage.local.get(['time_entries'], function (result) {
