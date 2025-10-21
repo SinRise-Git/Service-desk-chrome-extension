@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (result.end_text) {
             inputField.value = result.end_text;
         } else {
-            chrome.storage.local.set({'end_text': 'Ligger i $hylle$' });
-            document.getElementById('addInput').value = 'Ligger i $hylle$';
+            chrome.storage.local.set({'end_text': 'Ligger i $sted$' });
+            document.getElementById('addInput').value = 'Ligger i $sted$';
         }
     });
 

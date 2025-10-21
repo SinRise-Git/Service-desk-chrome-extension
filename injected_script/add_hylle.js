@@ -44,8 +44,8 @@ function startObservingAddCopyButton() {
             const hylleText = hylleDiv.querySelectorAll('.mr5.sb.fl')[1].innerText.trim();
             if (hylleText != 'Ukjent') {
                 chrome.storage.local.get(['end_text'], function (result) {
-                    const hylleTextRaw = result.end_text || 'Ligger i $hylle$'
-                    const hylleTextCopy = hylleTextRaw.includes('$hylle$') ? hylleTextRaw.replace('$hylle$', hylleText) : `Ligger i ${hylleText}`;
+                    const hylleTextRaw = result.end_text || 'Ligger i $sted$'
+                    const hylleTextCopy = hylleTextRaw.includes('$sted$') ? hylleTextRaw.replace('$sted$', hylleText) : `Ligger i ${hylleText}`;
                     navigator.clipboard.writeText(hylleTextCopy);
                 })
             }
