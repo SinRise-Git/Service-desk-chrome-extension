@@ -1,5 +1,4 @@
 (() => {
-    console.log('Time Counter script loaded.');
     async function attachListenerResolution(addTimeCheckbox) {
         if (addTimeCheckbox.found) return;
         addTimeCheckbox.found = true;
