@@ -99,6 +99,7 @@
                     chrome.storage.local.set({ time_entries: existing_time_entries });
                 
                 });
+                refreshWorklogs();
             }
         });
 
