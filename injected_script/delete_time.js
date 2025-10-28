@@ -77,16 +77,15 @@ function startObservingWorklogs() {
     }
 }
 
-let triggeredByClick = false;
+var triggeredByClickDeleteTime = false;
 document.addEventListener('click', function (event) {
-    triggeredByClick = true;
-    const link = event.target.closest('a[href]');
-    if (link) {
-        console.log('Click detected, starting to observe add copy button.');
+    triggeredByClickDeleteTime = true;
+    if ((event.target.hasAttribute('href') || event.target.matches('[data-i18n-key="common.worklogs"]')) && window.location.hash == '#worklogs') {
+        console.log('Click detected, starting to observe worklogs.');
         startObservingWorklogs();
     }
 });
 
-if (!triggeredByClick) {
+if (!triggeredByClickDeleteTime) {
     startObservingWorklogs();
 }

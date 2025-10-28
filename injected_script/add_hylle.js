@@ -1,12 +1,3 @@
-let triggeredByClick = false;
-document.addEventListener('click', function (event) {
-    triggeredByClick = true;
-    const link = event.target.closest('a[href]');
-    if (link) {
-        startObservingAddCopyButton();
-    }
-});
-
 function startObservingAddCopyButton() {
     var observer = new MutationObserver((mutations, observer) => {
         const resolutionDiv = document.getElementById('js-event-Resolution-1');
@@ -53,7 +44,16 @@ function startObservingAddCopyButton() {
     }
 }
 
-if (!triggeredByClick) {
+var triggeredByClickAddHylle = false;
+document.addEventListener('click', function (event) {
+    triggeredByClickAddHylle = true
+    if (event.target.hasAttribute('href') && window.location.hash == '#resolution') {
+        console.log('CLICK detected for add hylle button');
+        startObservingAddCopyButton();
+    }
+});
+
+if (!triggeredByClickAddHylle) {
     startObservingAddCopyButton();
 }
 

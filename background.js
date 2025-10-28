@@ -12,7 +12,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         'injected_script/inject_hylle.js',
         'injected_script/time_counter.js',
         'injected_script/delete_time.js',
-        'injected_script/add_hylle.js'
+        'injected_script/add_hylle.js',
+        'injected_script/test.js'
       ]
     }).catch(err => {
       console.error('Script injection failed:', err);
