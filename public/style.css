@@ -56,6 +56,12 @@ h1 {
     margin-left: 2.5px;
 }
 
+.work-day, .work-month {
+    display: flex;
+    gap: 5px;
+    
+}
+
 .textAdd-container {
     margin-bottom: 10px;
 }

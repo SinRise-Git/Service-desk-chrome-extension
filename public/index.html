@@ -14,7 +14,6 @@
 
 <body>
     <h1>Service Desk Helper</h1>
-    <div class="main">
         <div class="option-container">
             <div class="button-container">
                 <label for="toggleSwitch">Hylle visning:</label>
@@ -25,16 +24,29 @@
                 <span id="nameDisplay">Uknown</span>
             </div>
         </div>
-        <div class="work-container">
-            <p>Arbeidstid:</p>
-            <div class="work-hours">
-                <span id="workHours">0</span> 
-                <span>tm</span> 
-        
+        <div class="work-container"> 
+            <div class="work-day">
+                <p>I dag:</p>
+                <div class="work-hours">
+                    <span id="workHoursDay">0</span>
+                    <span>tm</span>
+                </div>
+                <div class="work-minutes">
+                    <span id="workMinutesDay">0</span>
+                    <span>min</span>
+                </div>
             </div>
-            <div class="work-minutes">
-                <span id="workMinutes">0</span> 
-                <span>min</span> 
+            <div class="work-month">
+                <p>30 D:</p>
+                <div class="work-hours">
+                    <span id="workHoursMonth">0</span>
+                    <span>tm</span>
+            
+                </div>
+                <div class="work-minutes">
+                    <span id="workMinutesMonth">0</span>
+                    <span>min</span>
+                </div>
             </div>
         </div>
         <div class="textAdd-container">
