@@ -1,175 +1,131 @@
-(() => {
-    async function attachListenerResolution(addTimeCheckbox) {
-        if (addTimeCheckbox.found) return;
-        addTimeCheckbox.found = true;
+var observer = new MutationObserver((mutations, obs) => {
+    const resolotionSubmitButton = document.getElementById('js-event-ViewWorkOrderResolution-4');
+    const checkbox = document.getElementById('timeSpentId');
+    const iframe = document.getElementById('worklogs_popup-frame');
 
-        addTimeCheckbox.addEventListener('change', async function () {
-            if (!this.checked) return;
-
-            const saveButton = document.getElementById('js-event-ViewWorkOrderResolution-4');
-            if (!saveButton) return;
-
-            let dataHour = 0
-            let dataMin = 0
-            let stored_name = 'username not set';
-
-            let { ownername, timeSpentHours, timeSpentMinutes, endTime } = await startObservingTaskDetails();
-            saveButton.addEventListener("mouseover", function () {
-                ownername = document.getElementsByClassName('form-control-static hide spot-static pr25 fc-spot-edit')[0].innerText.trim()
-            })
-
-            chrome.storage.local.get(['user_name'], function (result) {
-                if (result.user_name) {
-                    stored_name = result.user_name;
-                } else {
-                    chrome.storage.local.set({ user_name: ownername });
-                    stored_name = ownername;
+    if (resolotionSubmitButton && checkbox) {
+        if (!resolotionSubmitButton.getAttribute('found')) {
+            resolotionSubmitButton.setAttribute('found', true);
+            checkbox.addEventListener('click', (e) => {
+                if (e.target.checked) {
+                    observerTaskDetails('document', document);
                 }
-            });
+            })
+        }
+    }
 
-            if (timeSpentHours && timeSpentMinutes) {
-                timeSpentHours.addEventListener('change', function () {
-                    dataHour = Number(timeSpentHours.value);
-                })
-                timeSpentMinutes.addEventListener('change', function () {
-                    dataMin = Number(timeSpentMinutes.value);
-                })
+    if (iframe) {
+        iframe.onload = () => {
+            try {
+                const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+                if (iframeDocument) {
+                    observerTaskDetails('iframe', iframeDocument);
+                }
+            } catch (e) {
+                console.error(e);
             }
+        }
+    }
 
+});
 
-            saveButton.addEventListener('click', function (event) {
-                const isValidHour = Number.isInteger(dataHour) && dataHour >= 0;
-                const isValidMin = Number.isInteger(dataMin) && dataMin >= 0;
-                if (isValidHour && isValidMin && stored_name === ownername) {
-                    const time = `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`
-                    const data = {
-                        time: time,
-                        end_date: endTime.value,
-                        minutes: dataMin + (dataHour * 60),
-                        user: stored_name
-                    };
-                    console.log('Storing time entry:', data);
+observer.observe(document.documentElement || document, {
+    attributes: true,
+    childList: true,
+    characterData: true,
+    subtree: true
+});
+
+async function observerTaskDetails(type, parent) {
+    let saveItem = [];
+    let isEdit = false
+    let submitButton = false;
+    let taskCreator = false;
+    let saved = false
+    let taskToRemove = false;
+    let addedListener = false
+    let timeSpentHours = 0
+    let timeSpentMinutes = 0
+
+    chrome.storage.local.get(['user_name'], function (result) {
+        if (result.user_name) {
+            taskCreator = result.user_name;
+        } else {
+            taskCreator = 'unknown';
+        }
+    });
+
+    if (type === 'document') {
+        submitButton = parent.getElementById('js-event-ViewWorkOrderResolution-4');
+    } else if (type === 'iframe') {
+        submitButton = parent.querySelector('.btn.btn-primary');
+        isEdit =  document.querySelector('.disp-c.fw.pl15.sb.pt10.pb10').innerText.includes('Rediger arbeidslogg') ? true : false;
+    }
+
+    const observer = new MutationObserver((mutations, obs) => {
+        let taskId = document.getElementById('requestId').innerText;
+        let taskOwner = type == "document" ? parent.querySelectorAll('.select2-chosen')[5].innerText : isEdit ? parent.querySelectorAll('.select2-chosen')[0].innerText : parent.querySelectorAll('.select2-chosen')[1].innerText;
+        let endTime = parent.getElementById('end_time_IN_Display').value
+        timeSpentHours = parent.getElementById('timespenthrs').value
+        timeSpentMinutes = parent.getElementById('timespentmins').value
+
+        if (type === 'document') {
+            const checkBox = parent.getElementById('timeSpentId')
+            if (!checkBox.checked) {
+                obs.disconnect();
+            }
+        } else if (type === 'iframe' && !saved) {
+            saved = true;
+            saveItem = [taskId, taskOwner, timeSpentHours, timeSpentMinutes, endTime];
+        }
+
+        if (!addedListener && submitButton) {
+            addedListener = true;
+            submitButton.addEventListener('click', function () {
+                let isValidHour = /^[0-9]+$/.test(Number(timeSpentHours)) && timeSpentHours.trim() != '';
+                let isValidMin =  /^[0-9]+$/.test(Number(timeSpentMinutes)) && timeSpentMinutes.trim() != '';
+
+                if (submitButton && isValidHour && isValidMin && taskOwner === taskCreator) {
+                    let time = `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`
+
                     chrome.storage.local.get(['time_entries'], function (result) {
                         let existing_time_entries = result.time_entries || [];
-                        existing_time_entries.push(data);
-                        chrome.storage.local.set({ time_entries: existing_time_entries });
-                    });
-                }
-            });
-        });
-    }
 
-    function attachListenerWorklog(iframeDocument, ownername, timeSpentHours, timeSpentMinutes, endTime) {
-        let dataHour = 0
-        let dataMin = 0
-        let stored_name = 'username not set';
-        const submitButton = iframeDocument.getElementsByClassName('btn btn-primary')[0];
+                        if (isEdit) {
+                            let index = existing_time_entries.findIndex(entry =>
+                                entry.id === saveItem[0] &&
+                                entry.user === saveItem[1] &&
+                                entry.minutes === (Number(saveItem[2]) * 60 + Number(saveItem[3]))
+                            );
 
-        chrome.storage.local.get(['user_name'], function (result) {
-            if (result.user_name) {
-                stored_name = result.user_name;
-            } else {
-                chrome.storage.local.set({ user_name: ownername });
-                stored_name = ownername;
-            }
-        });
-
-        timeSpentHours.addEventListener('change', function () {
-            dataHour = Number(timeSpentHours.value);
-        })
-        timeSpentMinutes.addEventListener('change', function () {
-            dataMin = Number(timeSpentMinutes.value);
-        });
-
-        submitButton.addEventListener('click', function (event) {
-            const isValidHour = Number.isInteger(dataHour) && dataHour >= 0;
-            const isValidMin = Number.isInteger(dataMin) && dataMin >= 0;
-            if (isValidHour && isValidMin && stored_name === ownername) {
-                const time = `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`
-                const data = {
-                    time: time,
-                    end_date: endTime,
-                    minutes: dataMin + (dataHour * 60),
-                    user: stored_name
-                }; 
-                console.log('Storing time entry from worklog:', data);
-                chrome.storage.local.get(['time_entries'], function (result) {
-                    let existing_time_entries = result.time_entries || [];
-                    existing_time_entries.push(data);
-                    chrome.storage.local.set({ time_entries: existing_time_entries });
-                
-                });
-                refreshWorklogs();
-            }
-        });
-
-    }
-
-    function startObservingResolutionAddTime() {
-        if (window.location.hash == '#resolution') {
-            const observer = new MutationObserver((mutations, obs) => {
-                const addTimeCheckbox = document.getElementById('timeSpentId');
-                if (addTimeCheckbox) {
-                    attachListenerResolution(addTimeCheckbox);
-                }
-            });
-
-            observer.observe(document.documentElement || document, {
-                childList: true,
-                subtree: true
-            });
-        }
-    }
-    async function startObservingTaskDetails() {
-        if (window.location.hash == '#resolution') {
-            return new Promise((resolve) => {
-                const observer = new MutationObserver((mutations, obs) => {
-                    const ownerName = document.getElementsByClassName('form-control-static hide spot-static pr25 fc-spot-edit')[0].innerText.trim();
-                    const divHour = document.getElementById('timespenthrs');
-                    const divMin = document.getElementById('timespentmins')
-                    const endTime = document.getElementById('end_time_IN_Display');
-                    if (ownerName && divHour && divMin && endTime) {
-                        resolve({ ownername: ownerName, timeSpentHours: divHour, timeSpentMinutes: divMin, endTime: endTime, });
-                        obs.disconnect();
-                    }
-                });
-
-                observer.observe(document.documentElement || document, {
-                    childList: true,
-                    subtree: true
-                });
-            });
-        }
-    }
-    async function startObservingWorklogAddTime() {
-        if (window.location.hash == '#worklogs') {
-            const observer = new MutationObserver((mutations, obs) => {
-                const iframe = document.getElementById('worklogs_popup-frame');
-                if (iframe) {
-                    iframe.onload = () => {
-                        try {
-                            const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-                            const ownerName = iframeDocument.getElementsByClassName('form-control-static hide spot-static pr25 fc-spot-edit')[0].innerText.trim();
-                            const divHour = iframeDocument.getElementById('timespenthrs');
-                            const divMin = iframeDocument.getElementById('timespentmins')
-                            const endTime = iframeDocument.getElementById('end_time_IN_Display').value;
-                            if (iframeDocument && ownerName && divHour && divMin && endTime) {
-                                attachListenerWorklog(iframeDocument, ownerName, divHour, divMin, endTime);
+                            if (index !== -1) {
+                                time = existing_time_entries[index].time;
+                                existing_time_entries.splice(index, 1);
                             }
-                        } catch (e) {
-                            console.error(e);
                         }
-                    }
-                }
-            });
 
-            observer.observe(document.documentElement || document, {
-                childList: true,
-                subtree: true
+                        const data = {
+                            id: taskId,
+                            end_date: endTime,
+                            minutes: Number(timeSpentMinutes) + Number(timeSpentHours) * 60,
+                            time: time,
+                            user: taskOwner
+                        };
+
+                        existing_time_entries.push(data);
+                        chrome.storage.local.set({ time_entries: existing_time_entries }, function () {
+                            console.log('Updated time_entries in storage:', existing_time_entries);
+                        });
+                    });
+                };
             });
         }
-    }
-    startObservingWorklogAddTime()
-    startObservingResolutionAddTime()
-})();
-
+    });
+    
+    observer.observe(parent.documentElement || parent, {
+        attributes: true,       
+        childList: true,        
+        characterData: true,  
+        subtree: true  
+    });
+}
