@@ -64,8 +64,6 @@
     const parentDiv = document.querySelector('.pt5.mb10.mr10.fl.disp-flex.valign-center.flex-wrap');
     const sted = document.querySelector('p.form-control-static.spot-static[fafr-name="SITE"]')?.innerText || document.querySelector('p[data-name="site"]')?.innerText;
      
-
-    
     if (parentDiv && sted) {
         let hylle = 'Ikke registrert';
         for (const [key, locations] of Object.entries(valg)) {
