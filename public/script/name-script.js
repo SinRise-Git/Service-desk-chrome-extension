@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 if (entry.user === currentName && entry.time.includes(`${(new Date()).getMonth() + 1}/${(new Date()).getFullYear()}`)) {
                     totalMinutesMonth += entry.minutes;
-                    console.log('Adding minutes for month:', entry.minutes, 'Total now:', totalMinutesMonth);
                 }
             }
             document.getElementById("workHoursDay").innerText = Math.floor(totalMinutesDay / 60);

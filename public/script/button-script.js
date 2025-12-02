@@ -2,8 +2,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const toggleButton = document.getElementById('toggleSwitch');
 
     chrome.storage.local.get(['show_hylle'], function (result) {
-        toggleButton.checked = result.show_hylle || false;
-        console.log("Initial state from storage:", result.show_hylle);
+        if (result.show_hylle === undefined) {
+            toggleButton.checked = true;
+            chrome.storage.local.set({ show_hylle: true });
+        } else {
+            toggleButton.checked = result.show_hylle;
+        }
     });
 
     toggleButton.addEventListener('change', function () {

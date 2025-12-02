@@ -22,7 +22,7 @@ h1 {
 
 .name-container, .button-container {
     text-align: center;
-    margin: 10px 10px 10px 10px !important;
+    margin: 10px 10px 7.5px 10px !important;
 }
 
 .search-container, .button-container, .name-container, .work-container, .textAdd-container {
@@ -37,8 +37,8 @@ h1 {
 }
 
 .work-container {
-    gap: 5px;
-    margin: 5px 10px 10px 10px ;
+    gap: 10px;
+    margin: 5px 5px 10px 5px ;
 }
 
 .work-container p {
@@ -58,7 +58,7 @@ h1 {
 
 .work-day, .work-month {
     display: flex;
-    gap: 5px;
+    gap: 4.5px;
     
 }
 
