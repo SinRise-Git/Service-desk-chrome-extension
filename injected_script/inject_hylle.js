@@ -1,4 +1,9 @@
 (() => {
+    const exist = document.getElementById('req_header_hylle');
+    if (exist) {
+        return;
+    }
+
     const valg = {
         "Nord": [
             "Brannstasjonen",
@@ -56,20 +61,22 @@
         ]
     }
     
-    const parentDiv = document.getElementsByClassName('pt5 mb10 mr10 fl disp-flex valign-center flex-wrap')[0];
-    const sted = document.querySelector('p.form-control-static.spot-static[fafr-name="SITE"]')?.innerText.toLowerCase() || 'Ukjent';
-    const exist = document.getElementsByClassName('req_header_hylle')[0];
+    const parentDiv = document.querySelector('.pt5.mb10.mr10.fl.disp-flex.valign-center.flex-wrap');
+    const sted = document.querySelector('p.form-control-static.spot-static[fafr-name="SITE"]')?.innerText || document.querySelector('p[data-name="site"]')?.innerText;
+     
 
-    if (!exist && parentDiv && sted) {
-        let hylle = 'Ukjent';
+    
+    if (parentDiv && sted) {
+        let hylle = 'Ikke registrert';
         for (const [key, locations] of Object.entries(valg)) {
-            if (locations.some(location => sted.includes(location.toLowerCase()))) {
+            if (locations.some(location => sted.toLowerCase().includes(location.toLowerCase()))) {
                 hylle = key;
                 break;
             }
         }
+        
         const spanGroup = document.createElement('span');
-        spanGroup.className = 'req_header_hylle';
+        spanGroup.id = 'req_header_hylle';
 
         const space = document.createElement('span');
         space.className = 'text-muted fl';
@@ -87,7 +94,6 @@
         spanGroup.appendChild(space);
         spanGroup.appendChild(type);
         spanGroup.appendChild(place);
-
         parentDiv.append(spanGroup);
     }
 })();
