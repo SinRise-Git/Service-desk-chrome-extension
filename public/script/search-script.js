@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
             "Kleppegrennd",
             "Juvik boliger",
             "IT-avdelingen",
+            "Fagopplæring i Askøy kommune",
+            "ITavdelingen",
         ],
         "Vest": [
             "Strusshamn skole",

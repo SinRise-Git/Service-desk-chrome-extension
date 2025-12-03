@@ -1,6 +1,5 @@
 (() => {
     if (window.location.href.includes('#resolution') || window.location.href.includes('#worklogs')) {
-        console.log('Time counter script activated');
         const observer = new MutationObserver((mutations, obs) => {
             const resolotionSubmitButton = document.getElementById('js-event-ViewWorkOrderResolution-4');
             const checkbox = document.getElementById('timeSpentId');

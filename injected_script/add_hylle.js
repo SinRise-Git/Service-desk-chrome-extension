@@ -35,7 +35,7 @@
                 e.preventDefault();
                 const hylleText = hylleDiv.querySelectorAll('.mr5.sb.fl')[1].innerText.trim()
 
-                if (hylleText === 'Ukjent') {
+                if (hylleText === 'Ikke registrert') {
                     window.alert('Dette stedet er ikke registrert med hylle, legg det til i listen for å kunne kopiere det.');
                 } else {
                     chrome.storage.local.get(['end_text'], function (result) {
