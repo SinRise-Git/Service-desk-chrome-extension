@@ -36,7 +36,7 @@
                 const hylleText = hylleDiv.querySelectorAll('.mr5.sb.fl')[1].innerText.trim()
 
                 if (hylleText === 'Ikke registrert') {
-                    window.alert('Dette stedet er ikke registrert med hylle, legg det til i listen for å kunne kopiere det.');
+                    window.alert('Dette stedet er ikke registrert til en hylle, legg stedet til i hylle listen for å kunne kopiere det!');
                 } else {
                     chrome.storage.local.get(['end_text'], function (result) {
                         const hylleTextRaw = result.end_text?.trim() || 'Ligger i $sted$'

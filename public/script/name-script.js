@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
     chrome.storage.local.get(['user_name'], function (result) {
         if (result.user_name) {
             currentName = result.user_name;
-            document.getElementById("nameDisplay").innerText = currentName;
+            document.getElementById("nameDisplay").innerText = currentName.length <= 15 ? currentName : currentName.slice(0, 12) + '...';
+
         }
     });
     
