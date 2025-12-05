@@ -55,13 +55,15 @@
 
                     confirmButton.addEventListener('click', function () {
                         chrome.storage.local.get(['time_entries'], function (result) {
-                            let existing_entries = result.time_entries || [];
+                            const existing_entries = result.time_entries || [];
+                            const time = `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`
+
 
                             selectedEntries.forEach(selected => {
                                 const index = existing_entries.findIndex(entry =>
                                     entry.user === selected.user &&
                                     entry.minutes === selected.minutes &&
-                                    entry.end_date === selected.end_date
+                                    entry.time === time
                                 );
                                 if (index !== -1) existing_entries.splice(index, 1);
                             });

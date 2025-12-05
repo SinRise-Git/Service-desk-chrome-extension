@@ -42,19 +42,10 @@
             let saveItem = [];
             let isEdit = false
             let submitButton = false;
-            let taskCreator = false;
-            let saved = false
-            let addedListener = false
+            let taskCreator = null;
+            let taskOwner = null;
             let timeSpentHours = 0
             let timeSpentMinutes = 0
-
-            chrome.storage.local.get(['user_name'], function (result) {
-                if (result.user_name) {
-                    taskCreator = result.user_name;
-                } else {
-                    taskCreator = 'unknown';
-                }
-            });
 
             if (type === 'document') {
                 submitButton = parent.getElementById('js-event-ViewWorkOrderResolution-4');
@@ -64,40 +55,48 @@
             }
 
             const observer = new MutationObserver((mutations, obs) => {
-                let taskId = document.getElementById('requestId').innerText;
-                let taskOwner = type == "document" ? parent.querySelectorAll('.select2-chosen')[5].innerText : isEdit ? parent.querySelectorAll('.select2-chosen')[0].innerText : parent.querySelectorAll('.select2-chosen')[1].innerText;
-                let endTime = parent.getElementById('end_time_IN_Display').value
+                const taskId = document.getElementById('requestId').innerText;
+                taskOwner = type == "document" ? parent.querySelectorAll('.select2-chosen')[5].innerText : isEdit ? parent.querySelectorAll('.select2-chosen')[0].innerText : parent.querySelectorAll('.select2-chosen')[1].innerText;
                 timeSpentHours = parent.getElementById('timespenthrs').value
                 timeSpentMinutes = parent.getElementById('timespentmins').value
 
                 if (type === 'document') {
                     const checkBox = parent.getElementById('timeSpentId')
-                    if (!checkBox.checked) {
-                        obs.disconnect();
-                    }
-                } else if (type === 'iframe' && !saved) {
-                    saved = true;
-                    saveItem = [taskId, taskOwner, timeSpentHours, timeSpentMinutes, endTime];
+                    if (!checkBox.checked) obs.disconnect();
+                } else if (type === 'iframe' && !saveItem.length) {
+                    saveItem = [taskId, taskOwner, timeSpentHours, timeSpentMinutes];
                 }
 
-                if (!addedListener && submitButton) {
-                    addedListener = true;
-                    submitButton.addEventListener('click', function () {
-                        let isValidHour = /^[0-9]+$/.test(Number(timeSpentHours)) && timeSpentHours.trim() != '';
-                        let isValidMin = /^[0-9]+$/.test(Number(timeSpentMinutes)) && timeSpentMinutes.trim() != '';
+                if (!submitButton.dataset.addedListener) {
+                    submitButton.dataset.addedListener = 'true';
+                    
+                    chrome.storage.local.get(['user_name'], function (result) {
+                        if (result.user_name) {
+                            taskCreator = result.user_name;
+                        } else {
+                            chrome.storage.local.set({ user_name: taskOwner }, () => {
+                                console.log("Stored username:", taskOwner);
+                            });
+                            taskCreator = taskOwner;
+                        }
+                    });
 
+
+                    submitButton.addEventListener('click', function () {
+                        const isValidHour = /^[0-9]+$/.test(Number(timeSpentHours)) && timeSpentHours.trim() != '';
+                        const isValidMin = /^[0-9]+$/.test(Number(timeSpentMinutes)) && timeSpentMinutes.trim() != ''; 
                         if (submitButton && isValidHour && isValidMin && taskOwner === taskCreator) {
                             let time = `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`
-
                             chrome.storage.local.get(['time_entries'], function (result) {
-                                let existing_time_entries = result.time_entries || [];
+                                const existing_time_entries = result.time_entries || [];
 
                                 if (isEdit) {
-                                    let index = existing_time_entries.findIndex(entry =>
+                                    const index = existing_time_entries.findIndex(entry =>
                                         entry.id === saveItem[0] &&
                                         entry.user === saveItem[1] &&
                                         entry.minutes === (Number(saveItem[2]) * 60 + Number(saveItem[3]))
                                     );
+
 
                                     if (index !== -1) {
                                         time = existing_time_entries[index].time;
@@ -107,7 +106,6 @@
 
                                 const data = {
                                     id: taskId,
-                                    end_date: endTime,
                                     minutes: Number(timeSpentMinutes) + Number(timeSpentHours) * 60,
                                     time: time,
                                     user: taskOwner

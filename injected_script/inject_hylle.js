@@ -36,7 +36,6 @@
             "Juvik boliger",
             "IT-avdelingen",
             "Fagopplæring i Askøy kommune",
-            "ITavdelingen",
         ],
         "Vest": [
             "Strusshamn skole",
