@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
             inputField.value = result.end_text;
         } else {
             chrome.storage.local.set({'end_text': 'Ligger i $sted$' });
-            document.getElementById('addInput').value = 'Ligger i $sted$';
+            inputField.value = 'Ligger i $sted$';
         }
     });
 
