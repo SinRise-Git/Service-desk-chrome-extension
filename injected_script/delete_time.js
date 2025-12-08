@@ -59,7 +59,6 @@
                             const existing_entries = result.time_entries || [];
                             const time = `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`
 
-
                             selectedEntries.forEach(selected => {
                                 const index = existing_entries.findIndex(entry =>
                                     entry.taskId === taskId &&
