@@ -52,6 +52,7 @@
                 
                 deleteButton.addEventListener('click', function () {
                     const confirmButton = document.getElementById('submitButton');
+                    const taskId = document.getElementById('requestId').innerText;
 
                     confirmButton.addEventListener('click', function () {
                         chrome.storage.local.get(['time_entries'], function (result) {
@@ -61,6 +62,7 @@
 
                             selectedEntries.forEach(selected => {
                                 const index = existing_entries.findIndex(entry =>
+                                    entry.taskId === taskId &&
                                     entry.user === selected.user &&
                                     entry.minutes === selected.minutes &&
                                     entry.time === time
