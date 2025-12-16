@@ -36,7 +36,6 @@
                 const sted = document.querySelector('p.form-control-static.spot-static[fafr-name="SITE"]')?.innerText || document.querySelector('p[data-name="site"]')?.innerText;
 
                 for (const [key, locations] of Object.entries(steder)) {
-                    console.log(key, locations);
                     if (locations.some(location => sted.toLowerCase().includes(location.toLowerCase()))) {
                         hylleText = key;
                         break;
