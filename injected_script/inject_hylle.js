@@ -12,10 +12,8 @@
         if (parentDiv && sted) {
             let hylle = 'Ikke registrert';
             for (const [key, locations] of Object.entries(steder)) {
-                console.log(key, locations);
                 if (locations.some(location => sted.toLowerCase().includes(location.toLowerCase()))) {
                     hylle = key;
-                    console.log('Matched hylle:', hylle);
                     break;
                 }
             }
