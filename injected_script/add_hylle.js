@@ -2,10 +2,9 @@
     if (window.location.href.includes('#resolution')) {
         const observer = new MutationObserver((mutations, observer) => {
             const resolutionDiv = document.getElementById('js-event-Resolution-1');
-            const hylleDiv = document.getElementById('req_header_hylle');
             const copyButton = document.getElementById('copyHylleButton');
-            if (resolutionDiv && hylleDiv && !copyButton) {
-                addCopyButton(hylleDiv);
+            if (resolutionDiv && !copyButton) {
+                addCopyButton();
             }
         })
 
@@ -14,7 +13,7 @@
             subtree: true,
         });
 
-        function addCopyButton(hylleDiv) {
+        function addCopyButton() {
             const line = document.getElementById('s2id_woResolution_Id');
             const lineParent = line.parentElement.parentElement;
             const button = document.createElement('button');
@@ -28,23 +27,37 @@
             button.style.cursor = 'pointer';
             button.style.textAlign = 'center';
             button.id = 'copyHylleButton';
-            
+
             lineParent.appendChild(button);
 
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const hylleText = hylleDiv.querySelectorAll('.mr5.sb.fl')[1].innerText.trim()
+            chrome.storage.local.get(['steder'], (result) => {
+                let hylleText = 'Ikke registrert';
+                const steder = result.steder || {};
+                const sted = document.querySelector('p.form-control-static.spot-static[fafr-name="SITE"]')?.innerText || document.querySelector('p[data-name="site"]')?.innerText;
 
-                if (hylleText === 'Ikke registrert') {
-                    window.alert('Dette stedet er ikke registrert til en hylle, legg stedet til i hylle listen for å kunne kopiere det!');
-                } else {
-                    chrome.storage.local.get(['end_text'], function (result) {
-                        const hylleTextRaw = result.end_text?.trim() || 'Ligger i $sted$'
-                        const hylleTextCopy = hylleTextRaw.includes('$sted$') ? hylleTextRaw.replace('$sted$', hylleText) : `Ligger i ${hylleText}`;
-                        navigator.clipboard.writeText(hylleTextCopy);
-                    })
+                for (const [key, locations] of Object.entries(steder)) {
+                    console.log(key, locations);
+                    if (locations.some(location => sted.toLowerCase().includes(location.toLowerCase()))) {
+                        hylleText = key;
+                        break;
+                    }
                 }
+
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    if (hylleText === 'Ikke registrert') {
+                        window.alert('Dette stedet er ikke registrert til en hylle, legg stedet til i hylle listen for å kunne kopiere det!');
+                    } else {
+                        chrome.storage.local.get(['end_text'], function (result) {
+                            const hylleTextRaw = result.end_text?.trim() || 'Ligger i $sted$'
+                            const hylleTextCopy = hylleTextRaw.includes('$sted$') ? hylleTextRaw.replace('$sted$', hylleText) : `Ligger i ${hylleText}`;
+                            navigator.clipboard.writeText(hylleTextCopy);
+                        })
+                    }
+                });
             });
+
         }
     }
 })();
