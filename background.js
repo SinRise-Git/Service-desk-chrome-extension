@@ -32,6 +32,7 @@ const steder = {
     "IT-avdelingen",
     "Fagopplæring i Askøy kommune",
     "Askøy kulturskole",
+    "Askøy læring- og integreringssenter"
   ],
   "Vest": [
     "Strusshamn skole",
@@ -57,6 +58,12 @@ const steder = {
   ]
 };
 
+const fileList = [
+  'injected_script/delete_time.js',
+  'injected_script/add_hylle.js',
+  'injected_script/time_counter.js'
+];
+
 chrome.storage.local.set({ steder: steder });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -64,12 +71,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   
   const url = tab.url || tab.pendingUrl;
   if (!url || !url.startsWith('https://servicedesk.askoy.kommune.no/')) return;
-  
-  const fileList = [
-    'injected_script/delete_time.js',
-    'injected_script/add_hylle.js',
-    'injected_script/time_counter.js'
-  ];
 
   chrome.storage.local.get(['show_hylle'], (result) => {
     if (result.show_hylle) {
