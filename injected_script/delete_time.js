@@ -27,16 +27,16 @@
                 if (!worklogCheck) return;
 
                 worklogCheck.addEventListener('change', function () {
-
                     const user   = row.querySelectorAll('td')[2].querySelector('.d_w .d_w.cur-ptr a').innerText.trim();
                     const timeRaw = row.querySelectorAll('td')[3].querySelector('.d_w a').innerText.trim().match(/\d+/g);
-                    const date   = row.querySelectorAll('td')[6].querySelector('.d_w').innerText.trim();
+                    const dateRaw   = row.querySelectorAll('td')[6].querySelector('.d_w').innerText.trim(); 
+                    const date = String(new Date(dateRaw).getDate()).padStart(2, "0") + "/" + String(new Date(dateRaw).getMonth() + 1).padStart(2, "0") + "/" + new Date(dateRaw).getFullYear();   
 
                     const data = {
                         id: worklogCheck.value,
-                        user,
+                        user: user,
                         minutes: Number(timeRaw[0]) * 60 + Number(timeRaw[1]),
-                        end_date: date
+                        time: date
                     };
 
                     if (this.checked) {
@@ -49,6 +49,7 @@
 
             if (!deleteButton.dataset.observed) {
                 deleteButton.dataset.observed = 'true';
+                
                 
                 deleteButton.addEventListener('click', function () {
                     const confirmButton = document.getElementById('submitButton');

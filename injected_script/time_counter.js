@@ -92,7 +92,7 @@
 
                                 if (isEdit) {
                                     const index = existing_time_entries.findIndex(entry =>
-                                        entry.id === saveItem[0] &&
+                                        entry.taskId === saveItem[0] &&
                                         entry.user === saveItem[1] &&
                                         entry.minutes === (Number(saveItem[2]) * 60 + Number(saveItem[3]))
                                     );
@@ -105,7 +105,7 @@
                                 }
 
                                 const data = {
-                                    id: taskId,
+                                    taskId: taskId,
                                     minutes: Number(timeSpentMinutes) + Number(timeSpentHours) * 60,
                                     time: time,
                                     user: taskOwner
