@@ -1,5 +1,5 @@
 const steder = {
-  "Nord": [
+  Nord: [
     "Brannstasjonen",
     "Haugland skole",
     "Ravnagner sykehjem (Helsestasjon, Omsorgsbolig, Sone Midtre)",
@@ -14,7 +14,7 @@ const steder = {
     "Fromereide eldresenter",
     "Fauskanger barne- og ungdomsskole",
   ],
-  "Sør": [
+  Sør: [
     "Rådhuset",
     "Senteret",
     "Holmedalen PLO",
@@ -35,7 +35,7 @@ const steder = {
     "Askøy læring- og integreringssenter",
     "Ergo-, fysioterapi og servicetjenesten"
   ],
-  "Vest": [
+  Vest: [
     "Strusshamn skole",
     "Shoddien",
     "Strusshamn helsestasjon",
@@ -44,7 +44,7 @@ const steder = {
     "Follese skole",
     "Hetlevik skole"
   ],
-  "Øst": [
+  Øst: [
     "Florvåg skole",
     "Flimmerne",
     "Florvåg barnehage",
@@ -59,28 +59,28 @@ const steder = {
   ]
 };
 
-const fileList = [
-  'injected_script/delete_time.js',
-  'injected_script/add_hylle.js',
-  'injected_script/time_counter.js'
-];
-
-chrome.storage.local.set({ steder: steder });
+chrome.storage.local.set({ steder });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status !== 'complete') return;
-  
+
   const url = tab.url || tab.pendingUrl;
-  if (!url || !url.startsWith('https://servicedesk.askoy.kommune.no/')) return;
+  if (!url?.startsWith('https://servicedesk.askoy.kommune.no/')) return;
 
   chrome.storage.local.get(['show_hylle'], (result) => {
+    const files = [
+      'injected_script/delete_time.js',
+      'injected_script/add_hylle.js',
+      'injected_script/time_counter.js'
+    ];
+
     if (result.show_hylle) {
-      fileList.push('injected_script/inject_hylle.js');
+      files.push('injected_script/inject_hylle.js');
     }
 
     chrome.scripting.executeScript({
       target: { tabId },
-      files: fileList
+      files
     }).catch(err => {
       console.error('Script injection failed:', err, url);
     });
