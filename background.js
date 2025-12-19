@@ -32,7 +32,8 @@ const steder = {
     "IT-avdelingen",
     "Fagopplæring i Askøy kommune",
     "Askøy kulturskole",
-    "Askøy læring- og integreringssenter"
+    "Askøy læring- og integreringssenter",
+    "Ergo-, fysioterapi og servicetjenesten"
   ],
   "Vest": [
     "Strusshamn skole",
