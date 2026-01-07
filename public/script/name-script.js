@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (result.user_name) {
             currentName = result.user_name;
             document.getElementById("nameDisplay").innerText = currentName.length <= 15 ? currentName : currentName.slice(0, 12) + '...';
-
         }
     });
     
@@ -20,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (entry.user === currentName && entry.time.includes(`${(new Date()).getMonth() + 1}/${(new Date()).getFullYear()}`)) {
                     totalMinutesMonth += entry.minutes;
                 }
-
             });
             document.getElementById("workHoursDay").innerText = Math.floor(totalMinutesDay / 60);
             document.getElementById("workMinutesDay").innerText = totalMinutesDay % 60;
