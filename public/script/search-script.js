@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-
     chrome.storage.local.get(['steder'], (result) => {
         const steder = result.steder || {};
 
