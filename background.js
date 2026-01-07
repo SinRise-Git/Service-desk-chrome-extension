@@ -12,7 +12,7 @@ const steder = {
     "Davanger skole",
     "Træet skole",
     "Fromereide eldresenter",
-    "Fauskanger barne- og ungdomsskole",
+    "Fauskanger barne- og ungdomsskole"
   ],
   Sør: [
     "Rådhuset",
@@ -33,7 +33,9 @@ const steder = {
     "Fagopplæring i Askøy kommune",
     "Askøy kulturskole",
     "Askøy læring- og integreringssenter",
-    "Ergo-, fysioterapi og servicetjenesten"
+    "Ergo-, fysioterapi og servicetjenesten",
+    "Kultur, idrett og næring",
+    "Origo - Team barn, unge og unge voksne"
   ],
   Vest: [
     "Strusshamn skole",
