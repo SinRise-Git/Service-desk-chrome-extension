@@ -35,7 +35,8 @@ const steder = {
     "Askøy læring- og integreringssenter",
     "Ergo-, fysioterapi og servicetjenesten",
     "Kultur, idrett og næring",
-    "Origo - Team barn, unge og unge voksne"
+    "Origo - Team barn, unge og unge voksne",
+    "Bofellesskap og tjenester til utviklingshemmede",
   ],
   Vest: [
     "Strusshamn skole",

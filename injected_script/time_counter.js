@@ -56,13 +56,15 @@
 
             const observer = new MutationObserver((mutations, obs) => {
                 const taskId = document.getElementById('requestId').innerText;
-                taskOwner = type == "document" ? parent.querySelectorAll(".select2-choice #select2-chosen-13").innerText : isEdit ? parent.querySelectorAll('.select2-chosen')[0].innerText : parent.querySelectorAll('.select2-chosen')[1].innerText;
+                taskOwner = type == "document" ? parent.querySelector("#owner_control .select2-container.form-control.sel2-mul-break a.select2-choice span.select2-chosen")?.innerText : isEdit ? parent.querySelectorAll('.select2-chosen')[0]?.innerText : parent.querySelectorAll('.select2-chosen')[1]?.innerText;
                 timeSpentHours = parent.getElementById('timespenthrs').value
                 timeSpentMinutes = parent.getElementById('timespentmins').value
 
                 if (type === 'document') {
                     const checkBox = parent.getElementById('timeSpentId')
-                    if (!checkBox.checked) obs.disconnect();
+                    if (!checkBox.checked){
+                        obs.disconnect();
+                    } 
                 } else if (type === 'iframe' && !saveItem.length) {
                     saveItem = [taskId, taskOwner, timeSpentHours, timeSpentMinutes];
                 }
@@ -113,6 +115,7 @@
 
                                 existing_time_entries.push(data);
                                 chrome.storage.local.set({ time_entries: existing_time_entries }, function () {
+                                    obs.disconnect();
                                     console.log('Updated time_entries in storage:', existing_time_entries);
                                 });
                             });
