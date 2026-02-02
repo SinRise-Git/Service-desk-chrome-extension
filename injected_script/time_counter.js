@@ -57,8 +57,8 @@
             const observer = new MutationObserver((mutations, obs) => {
                 const taskId = document.getElementById('requestId').innerText;
                 taskOwner = type == "document" ? parent.querySelectorAll('.select2-chosen')[5].innerText : isEdit ? parent.querySelectorAll('.select2-chosen')[0].innerText : parent.querySelectorAll('.select2-chosen')[1].innerText;
-                timeSpentHours = parent.querySelector('.input-group.addon-nofill #timespenthrs').value
-                timeSpentMinutes = parent.querySelector('.input-group.addon-nofill #timespentmins').value
+                timeSpentHours = parent.getElementById('timespenthrs').value
+                timeSpentMinutes = parent.getElementById('timespentmins').value
 
                 if (type === 'document') {
                     const checkBox = parent.getElementById('timeSpentId')
