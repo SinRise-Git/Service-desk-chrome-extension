@@ -46,6 +46,7 @@
             let taskOwner = null;
             let timeSpentHours = 0
             let timeSpentMinutes = 0
+            const taskId = document.getElementById('requestId').innerText;
 
             if (type === 'document') {
                 submitButton = parent.getElementById('js-event-ViewWorkOrderResolution-4');
@@ -55,7 +56,6 @@
             }
 
             const observer = new MutationObserver((mutations, obs) => {
-                const taskId = document.getElementById('requestId').innerText;
                 taskOwner = type == "document" ? parent.querySelectorAll('.select2-chosen')[5].innerText : isEdit ? parent.querySelectorAll('.select2-chosen')[0].innerText : parent.querySelectorAll('.select2-chosen')[1].innerText;
                 timeSpentHours = parent.querySelector('.input-group.addon-nofill #timespenthrs').value
                 timeSpentMinutes = parent.querySelector('.input-group.addon-nofill #timespentmins').value
