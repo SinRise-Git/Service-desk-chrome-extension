@@ -48,6 +48,10 @@
             let timeSpentMinutes = 0
             const taskId = document.getElementById('requestId').innerText;
 
+            const no_undefined = (oldval, newval) => {
+                return newval !== undefined && newval !== '' ? newval : oldval;
+            }
+
             if (type === 'document') {
                 submitButton = parent.getElementById('js-event-ViewWorkOrderResolution-4');
             } else if (type === 'iframe') {
@@ -56,9 +60,13 @@
             }
 
             const observer = new MutationObserver((mutations, obs) => {
-                taskOwner = type == "document" ? parent.querySelector("#owner_control .select2-container.form-control.sel2-mul-break a.select2-choice span.select2-chosen")?.innerText : isEdit ? parent.querySelectorAll('.select2-chosen')[0]?.innerText : parent.querySelectorAll('.select2-chosen')[1]?.innerText;
-                timeSpentHours = parent.querySelector('.input-group.addon-nofill #timespenthrs').value
-                timeSpentMinutes = parent.querySelector('.input-group.addon-nofill #timespentmins').value
+                const newTaskOwner = type === "document" ? parent.querySelector("#owner_control .select2-container.form-control.sel2-mul-break a.select2-choice span.select2-chosen")?.innerText : isEdit ? parent.querySelectorAll('.select2-chosen')[0]?.innerText : parent.querySelectorAll('.select2-chosen')[1]?.innerText;
+                const newTimeSpentHours = parent.querySelector('.input-group.addon-nofill #timespenthrs')?.value;
+                const newTimeSpentMinutes = parent.querySelector('.input-group.addon-nofill #timespentmins')?.value;
+
+                taskOwner = no_undefined(taskOwner, newTaskOwner);
+                timeSpentHours = no_undefined(timeSpentHours, newTimeSpentHours);
+                timeSpentMinutes = no_undefined(timeSpentMinutes, newTimeSpentMinutes);
 
                 if (type === 'document') {
                     const checkBox = parent.getElementById('timeSpentId')
@@ -69,7 +77,7 @@
 
                 if (!submitButton.dataset.addedListener) {
                     submitButton.dataset.addedListener = 'true';
-                    
+
                     chrome.storage.local.get(['user_name'], function (result) {
                         if (result.user_name) {
                             taskCreator = result.user_name;
@@ -81,10 +89,11 @@
                         }
                     });
 
-
                     submitButton.addEventListener('click', function () {
+                        const setTaskOwner = taskOwner
                         const isValidHour = /^[0-9]+$/.test(Number(timeSpentHours)) && timeSpentHours.trim() != '';
-                        const isValidMin = /^[0-9]+$/.test(Number(timeSpentMinutes)) && timeSpentMinutes.trim() != ''; 
+                        const isValidMin = /^[0-9]+$/.test(Number(timeSpentMinutes)) && timeSpentMinutes.trim() != '';
+                        console.log('Submit button clicked:', { isValidHour, isValidMin, taskOwner, taskCreator });
                         if (submitButton && isValidHour && isValidMin && taskOwner === taskCreator) {
                             let time = `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`
                             chrome.storage.local.get(['time_entries'], function (result) {
@@ -108,12 +117,13 @@
                                     taskId: taskId,
                                     minutes: Number(timeSpentMinutes) + Number(timeSpentHours) * 60,
                                     time: time,
-                                    user: taskOwner
+                                    user: setTaskOwner
                                 };
 
                                 existing_time_entries.push(data);
                                 chrome.storage.local.set({ time_entries: existing_time_entries }, function () {
                                     console.log('Updated time_entries in storage:', existing_time_entries);
+                                    obs.disconnect();
                                 });
                             });
                         };
