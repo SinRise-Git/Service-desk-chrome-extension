@@ -60,7 +60,7 @@
             }
 
             const observer = new MutationObserver((mutations, obs) => {
-                const newTaskOwner = type === "document" ? parent.querySelector("#owner_control .select2-container.form-control.sel2-mul-break a.select2-choice span.select2-chosen")?.innerText : isEdit ? parent.querySelectorAll('.select2-chosen')[0]?.innerText : parent.querySelectorAll('.select2-chosen')[1]?.innerText;
+                const newTaskOwner = type === "document" ? parent.querySelector("#owner_control .select2-container.form-control.sel2-mul-break a.select2-choice span.select2-chosen")?.innerText : parent.querySelector('.select2-container.form-control.sel2-mul-break .select2-choice #select2-chosen-2')?.innerText;
                 const newTimeSpentHours = parent.querySelector('.input-group.addon-nofill #timespenthrs')?.value;
                 const newTimeSpentMinutes = parent.querySelector('.input-group.addon-nofill #timespentmins')?.value;
 
