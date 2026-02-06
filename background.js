@@ -37,6 +37,7 @@ const steder = {
     "Kultur, idrett og næring",
     "Origo - Team barn, unge og unge voksne",
     "Bofellesskap og tjenester til utviklingshemmede",
+    "Hjemmesykepleien avd. Sør",
   ],
   Vest: [
     "Strusshamn skole",
